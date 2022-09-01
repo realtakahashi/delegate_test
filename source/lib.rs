@@ -1,5 +1,10 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
+pub use self::source::{
+    Source,
+    SourceRef,
+};
+
 use ink_lang as ink;
 
 #[ink::contract]
@@ -49,7 +54,12 @@ mod source {
         #[ink(message)]
         pub fn destination_flip(&mut self) {
             let caller = self.env().caller();
-            ink_env::debug_println!("########## source ############### value is {:?}", caller);
+            let account_id: AccountId = self.env().account_id();
+            let caller_is_origin = self.env().caller_is_origin();
+            ink_env::debug_println!("########## source caller ############### value is {:?}", caller);
+            ink_env::debug_println!("########## source caller_is_origin ############### value is {:?}", caller_is_origin);
+            ink_env::debug_println!("########## source account_id ############### value is {:?}", account_id);
+            ink_env::debug_println!("########## source destination address ############### value is {:?}", self.destination);
 
             self.destination.flip();
         }

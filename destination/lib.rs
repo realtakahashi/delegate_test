@@ -9,7 +9,6 @@ use ink_lang as ink;
 
 #[ink::contract]
 pub mod destination {
-
     /// Defines the storage of your contract.
     /// Add new fields to the below struct in order
     /// to add new static storage fields to your contract.
@@ -23,15 +22,7 @@ pub mod destination {
         /// Constructor that initializes the `bool` value to the given `init_value`.
         #[ink(constructor)]
         pub fn new(init_value: bool) -> Self {
-            Self { value: init_value }
-        }
-
-        /// Constructor that initializes the `bool` value to `false`.
-        ///
-        /// Constructors can delegate to other constructors.
-        #[ink(constructor)]
-        pub fn default() -> Self {
-            Self::new(Default::default())
+            Self { value: init_value}
         }
 
         /// A message that can be called on instantiated contracts.
@@ -40,7 +31,11 @@ pub mod destination {
         #[ink(message)]
         pub fn flip(&mut self) {
             let caller = self.env().caller();
-            ink_env::debug_println!("########## destination ############### value is {:?}", caller);
+            let account_id: AccountId = self.env().account_id();
+            let caller_is_origin = self.env().caller_is_origin();
+            ink_env::debug_println!("########## destination caller ############### value is {:?}", caller);
+            ink_env::debug_println!("########## destination caller_is_origin ############### value is {:?}", caller_is_origin);
+            ink_env::debug_println!("########## destination account_id ############### value is {:?}", account_id);
 
             self.value = !self.value;
         }
